@@ -25,12 +25,20 @@ then
   ./sbin/start-history-server.sh >> logs/spark-history-server.out
   # start-history-server.sh will exit immediately, so we need to keep the container running
   tail -f logs/spark-history-server.out
+# Spark Thrift (JDBC/ODBC) server
+elif [ "$DES_WORKLOAD" == "spark-thrift-server" ]
+then
+  echo "Starting Spark Thrift Server in $SPARK_HOME"
+  cd $SPARK_HOME || exit
+  ./sbin/start-thriftserver.sh >> logs/spark-thrift-server.out
+  # start-thriftserver.sh will exit immediately, so we need to keep the container running
+  tail -f logs/spark-thrift-server.out
 # JupyterLab
 elif [ "$DES_WORKLOAD" == "jupyterlab" ]
 then
-  echo "Starting JupyterLab in $SHARED_WORKSPACE"
+  echo "Starting JupyterLab in $SHARED_VOL/notebooks"
   . /jupyterlab/bin/activate
-  cd "$SHARED_WORKSPACE" || exit
+  cd "$SHARED_VOL/notebooks" || exit
 
   export PYSPARK_DRIVER_PYTHON=jupyter
   export PYSPARK_DRIVER_OPTS="notebook --no-browser --port=$JUPYTERLAB_PORT"
