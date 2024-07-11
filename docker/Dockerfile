@@ -32,8 +32,8 @@ RUN echo "alias pyspark=${SPARK_HOME}/bin/pyspark" >> ~/.bashrc && \
     echo "alias spark-shell=${SPARK_HOME}/bin/spark-shell" >> ~/.bashrc && \
     mkdir ${SPARK_HOME}/logs && \
     mkdir /tmp/spark-events && \
-    rm spark.tgz \
-COPY spark-defaults.conf $SPARK_HOME/conf/spark-defaults.conf
+    rm spark.tgz
+COPY spark-defaults.conf ${SPARK_HOME}/conf/spark-defaults.conf
 
 RUN mkdir -p $SHARED_VOL/notebooks && \
     mkdir -p $SHARED_VOL/spark-warehouse
