@@ -17,6 +17,14 @@ then
   ./sbin/start-worker.sh spark://"${SPARK_MASTER_HOST}":"${SPARK_MASTER_PORT}" >> logs/spark-worker.out
   # start-slave.sh will exit immediately, so we need to keep the container running
   tail -f logs/spark-worker.out
+# Spark History Server
+elif [ "$DES_WORKLOAD" == "spark-history-server" ]
+then
+  echo "Starting Spark History Server in $SPARK_HOME"
+  cd $SPARK_HOME || exit
+  ./sbin/start-history-server.sh >> logs/spark-history-server.out
+  # start-history-server.sh will exit immediately, so we need to keep the container running
+  tail -f logs/spark-history-server.out
 # JupyterLab
 elif [ "$DES_WORKLOAD" == "jupyterlab" ]
 then

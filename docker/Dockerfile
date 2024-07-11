@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 # args contain immitable variables that can't be changed after build
 ARG JUPYTERLAB_VERSION=4.2.3
 ARG SHARED_WORKSPACE=/opt/workspace
-ARG SPARK_VERSION=3.3.2
+ARG SPARK_VERSION=3.5.1
 ARG HADOOP_VERSION=3
 ARG SPARK_HOME=/opt/spark
 
