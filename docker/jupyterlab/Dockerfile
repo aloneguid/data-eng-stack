@@ -14,7 +14,7 @@ ENV SPARK_VERSION=$SPARK_VERSION
 # Install JupyterLab into virtual environment
 RUN python3 -m venv /jupyterlab && \
     . /jupyterlab/bin/activate && \
-    pip install jupyterlab==$JUPYTERLAB_VERSION pyspark==$SPARK_VERSION findspark pandas jupyterlab-git
+    pip install jupyterlab==$JUPYTERLAB_VERSION pyspark==$SPARK_VERSION findspark pandas jupyterlab-git jupyter-resource-usage
 
 RUN mkdir -p $SHARED_VOL/notebooks
 

@@ -19,3 +19,7 @@ Includes:
   - Persistent metastore (Hive).
 - [Jupyter Lab](http://localhost:8888) with extensions:
   - jupyterlab-git
+  - [jupyter-resource-usage](https://github.com/jupyter-server/jupyter-resource-usage)
+
+Todo:
+- Hosted vs code
