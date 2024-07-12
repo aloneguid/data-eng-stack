@@ -12,7 +12,7 @@ then
 # Spark Worker
 elif [ "$DES_WORKLOAD" == "spark-worker" ]
 then
-  echo "Starting Spark Worker in $SPARK_HOME"
+  echo "Starting Spark Worker in $SPARK_HOME, pointed to $SPARK_MASTER_HOST:$SPARK_MASTER_PORT"
   cd $SPARK_HOME || exit
   ./sbin/start-worker.sh spark://"${SPARK_MASTER_HOST}":"${SPARK_MASTER_PORT}" >> logs/spark-worker.out
   tail -f logs/*
