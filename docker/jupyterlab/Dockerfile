@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM aloneguid/des-base:latest
 
 # args contain immitable variables that can't be changed after build, but we redefine them as ENV to be used in the image
 ARG JUPYTERLAB_VERSION=4.2.3
@@ -10,10 +10,6 @@ ENV JUPYTERLAB_VERSION=$JUPYTERLAB_VERSION
 ENV JUPYTERLAB_PORT=$JUPYTERLAB_PORT
 ENV SHARED_VOL=$SHARED_VOL
 ENV SPARK_VERSION=$SPARK_VERSION
-
-# Base: OS, Python, JDK 11
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip python3-venv openjdk-11-jdk curl
 
 # Install JupyterLab into virtual environment
 RUN python3 -m venv /jupyterlab && \

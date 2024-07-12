@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM aloneguid/des-base:latest
 
 # args contain immitable variables that can't be changed after build, but we redefine them as ENV to be used in the image
 ARG SHARED_VOL=/opt/data
@@ -12,10 +12,6 @@ ENV SPARK_VERSION=$SPARK_VERSION
 ENV HADOOP_VERSION=$HADOOP_VERSION
 ENV SPARK_HOME=$SPARK_HOME
 ENV SCALA_VERSION=$SCALA_VERSION
-
-# Base: OS, Python, JDK 11
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip openjdk-11-jdk curl
 
 # Install Spark into /opt/spark (SPARK_HOME) directory
 RUN curl https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -o spark.tgz
