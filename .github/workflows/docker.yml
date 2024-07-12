@@ -22,12 +22,12 @@ jobs:
         working-directory: ./docker/apache-spark
 
       # Optional: Log in to Docker Hub
-#      - name: Log in to Docker Hub
-#        uses: docker/login-action@v1
-#        with:
-#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       # Optional: Push the image to Docker Hub
-#      - name: Push the Docker image
-#        run: docker push aloneguid/des:spark-${{ matrix.spark }}
+      - name: Push the Docker image
+        run: docker push aloneguid/des-spark:${{ matrix.spark }}
