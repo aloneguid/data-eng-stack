@@ -6,12 +6,36 @@ on:
       - master
 
 jobs:
+
+  build-base:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build . -t aloneguid/des-base
+        working-directory: ./docker/base
+
+      # Optional: Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      # Optional: Push the image to Docker Hub
+      - name: Push the Docker image
+        run: docker push aloneguid/des-base
+
   build-spark:
     strategy:
       fail-fast: false
       matrix:
         spark: [ 3.3.2, 3.5.1 ]
     runs-on: ubuntu-latest
+    needs: build-base
 
     steps:
       - name: Check out the repository
@@ -40,6 +64,7 @@ jobs:
           - spark: 3.5.1
             jupyterlab: 4.2.3
     runs-on: ubuntu-latest
+    needs: build-base
 
     steps:
       - name: Check out the repository

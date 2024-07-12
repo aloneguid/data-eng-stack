@@ -49,15 +49,15 @@ services:
       - DES_WORKLOAD=spark-thrift-server
     volumes:
       - data:/opt/data
-#  jupyterlab:
-#    image: aloneguid/des-spark:3.5.1
-#    depends_on:
-#      - spark-master
-#      - spark-worker-1
-#    ports:
-#      - 8888:8888
-#    environment:
-#      - SPARK_MASTER_HOST=spark-master
-#      - DES_WORKLOAD=jupyterlab
-#    volumes:
-#      - data:/opt/data
+  jupyterlab:
+    image: aloneguid/des-jupyterlab:4.2.3-3.5.1
+    depends_on:
+      - spark-master
+      - spark-worker-1
+    ports:
+      - 8888:8888
+    environment:
+      - SPARK_MASTER_HOST=spark-master
+      - DES_WORKLOAD=jupyterlab
+    volumes:
+      - data:/opt/data
