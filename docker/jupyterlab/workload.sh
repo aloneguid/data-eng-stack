@@ -15,7 +15,6 @@ then
   echo "Starting Spark Worker in $SPARK_HOME"
   cd $SPARK_HOME || exit
   ./sbin/start-worker.sh spark://"${SPARK_MASTER_HOST}":"${SPARK_MASTER_PORT}" >> logs/spark-worker.out
-  # start-slave.sh will exit immediately, so we need to keep the container running
   tail -f logs/spark-worker.out
 # Spark History Server
 elif [ "$DES_WORKLOAD" == "spark-history-server" ]
@@ -23,7 +22,6 @@ then
   echo "Starting Spark History Server in $SPARK_HOME"
   cd $SPARK_HOME || exit
   ./sbin/start-history-server.sh >> logs/spark-history-server.out
-  # start-history-server.sh will exit immediately, so we need to keep the container running
   tail -f logs/spark-history-server.out
 # Spark Thrift (JDBC/ODBC) server
 elif [ "$DES_WORKLOAD" == "spark-thrift-server" ]
@@ -31,8 +29,14 @@ then
   echo "Starting Spark Thrift Server in $SPARK_HOME"
   cd $SPARK_HOME || exit
   ./sbin/start-thriftserver.sh >> logs/spark-thrift-server.out
-  # start-thriftserver.sh will exit immediately, so we need to keep the container running
   tail -f logs/spark-thrift-server.out
+# Spark Connect Server
+elif [ "$DES_WORKLOAD" == "spark-connect-server" ]
+then
+  echo "Starting Spark Connect Server in $SPARK_HOME"
+  cd $SPARK_HOME || exit
+  ./sbin/start-connect-server.sh --packages org.apache.spark:spark-connect_"$SCALA_VERSION":"$SPARK_VERSION" >> logs/spark-connect-server.out
+  tail -f logs/spark-connect-server.out
 # JupyterLab
 elif [ "$DES_WORKLOAD" == "jupyterlab" ]
 then

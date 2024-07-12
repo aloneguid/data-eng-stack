@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  build-spark:
     strategy:
       fail-fast: false
       matrix:
@@ -17,17 +17,17 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v2
 
-      - name: Build the Docker image
-        run: docker build . -t aloneguid/des:spark-${{ matrix.spark }}
-        working-directory: ./docker
+      - name: Build Docker image
+        run: docker build . -t aloneguid/des-spark:${{ matrix.spark }}
+        working-directory: ./docker/apache-spark
 
       # Optional: Log in to Docker Hub
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+#      - name: Log in to Docker Hub
+#        uses: docker/login-action@v1
+#        with:
+#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       # Optional: Push the image to Docker Hub
-      - name: Push the Docker image
-        run: docker push aloneguid/des:spark-${{ matrix.spark }}
+#      - name: Push the Docker image
+#        run: docker push aloneguid/des:spark-${{ matrix.spark }}
