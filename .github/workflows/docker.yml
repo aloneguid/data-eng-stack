@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Docker image
-        run: docker build . -t aloneguid/des-jupyterlab:${{ matrix.config.spark }}
+        run: docker build --build-arg --build-arg SPARK_VERSION=${{ matrix.spark }} --build-arg JUPYTERLAB_VERSION=${{ matrix.jupyterlab }} . -t aloneguid/des-jupyterlab:${{ matrix.config.jupyterlab }}-${{ matrix.config.spark }}
         working-directory: ./docker/jupyterlab
 
       # Optional: Log in to Docker Hub
@@ -58,4 +58,4 @@ jobs:
 
       # Optional: Push the image to Docker Hub
       - name: Push the Docker image
-        run: docker push aloneguid/des-jupyterlab:3.5.1
+        run: docker push aloneguid/des-jupyterlab:${{ matrix.config.jupyterlab }}-${{ matrix.config.spark }}
