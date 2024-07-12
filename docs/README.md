@@ -9,10 +9,13 @@ Goals:
 - Easy to upgrade.
 
 Includes:
+- Across all images:
+  - git. 
 - Apache Spark
   - [master](http://localhost:9090)
   - [worker #1](http://localhost:9091)
   - [history server](http://localhost:18080)
   - **thrift server**. Connect using `jdbc:hive2://localhost:10000` ([instructions](https://spark.apache.org/docs/latest/sql-distributed-sql-engine.html)).
   - Persistent metastore (Hive).
-- [Jupyter Lab](http://localhost:8888)
+- [Jupyter Lab](http://localhost:8888) with extensions:
+  - jupyterlab-git
