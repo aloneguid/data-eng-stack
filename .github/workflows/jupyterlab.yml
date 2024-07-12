@@ -1,35 +1,9 @@
-name: Build Other Images
+name: Build JupyterLab Image
 
 on:
   workflow_dispatch:
 
 jobs:
-
-  build-spark:
-    strategy:
-      fail-fast: false
-      matrix:
-        spark: [ 3.3.2, 3.5.1 ]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v2
-
-      - name: Build Docker image
-        run: docker build --build-arg SPARK_VERSION=${{ matrix.spark }} . -t aloneguid/des-spark:${{ matrix.spark }}
-        working-directory: ./docker/apache-spark
-
-      # Optional: Log in to Docker Hub
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
-
-      # Optional: Push the image to Docker Hub
-      - name: Push the Docker image
-        run: docker push aloneguid/des-spark:${{ matrix.spark }}
 
   build-jupyterlab:
     strategy:
