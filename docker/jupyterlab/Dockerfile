@@ -1,22 +1,15 @@
 FROM ubuntu:24.04
 
-# args contain immitable variables that can't be changed after build
+# args contain immitable variables that can't be changed after build, but we redefine them as ENV to be used in the image
 ARG JUPYTERLAB_VERSION=4.2.3
+ENV JUPYTERLAB_PORT=8888
 ARG SHARED_VOL=/opt/data
 ARG SPARK_VERSION=3.5.1
-ARG HADOOP_VERSION=3
-ARG SPARK_HOME=/opt/spark
-ARG SCALA_VERSION=2.12
 
-# env vars can be changed when container runs
-ENV JUPYTERLAB_PORT=8888
-ENV SPARK_MASTER_HOST=spark-master
-ENV SPARK_MASTER_PORT=7077
-ENV SPARK_HOME=$SPARK_HOME
-ENV PYSPARK_PYTHON=python3
+ENV JUPYTERLAB_VERSION=$JUPYTERLAB_VERSION
+ENV JUPYTERLAB_PORT=$JUPYTERLAB_PORT
 ENV SHARED_VOL=$SHARED_VOL
 ENV SPARK_VERSION=$SPARK_VERSION
-ENV SCALA_VERSION=$SCALA_VERSION
 
 # Base: OS, Python, JDK 11
 RUN apt-get update && \
@@ -27,26 +20,14 @@ RUN python3 -m venv /jupyterlab && \
     . /jupyterlab/bin/activate && \
     pip install jupyterlab==$JUPYTERLAB_VERSION pyspark==$SPARK_VERSION findspark pandas
 
-# Install Spark into /opt/spark (SPARK_HOME) directory
-RUN curl https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz -o spark.tgz
-RUN tar -xf spark.tgz
-RUN mv spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION} ${SPARK_HOME}
-RUN echo "alias pyspark=${SPARK_HOME}/bin/pyspark" >> ~/.bashrc && \
-    echo "alias spark-shell=${SPARK_HOME}/bin/spark-shell" >> ~/.bashrc && \
-    mkdir ${SPARK_HOME}/logs && \
-    mkdir /tmp/spark-events && \
-    rm spark.tgz
-COPY spark-defaults.conf ${SPARK_HOME}/conf/spark-defaults.conf
-
-RUN mkdir -p $SHARED_VOL/notebooks && \
-    mkdir -p $SHARED_VOL/spark-warehouse
+RUN mkdir -p $SHARED_VOL/notebooks
 
 # copy workload script
-COPY workload.sh /des.sh
-RUN chmod +x /des.sh
+COPY run.sh /run.sh
+RUN chmod +x /run.sh
 
 # copy initial workspace files
 COPY notebooks/ ${SHARED_VOL}/notebooks/
 
 VOLUME $SHARED_VOL
-CMD ["/bin/bash", "/des.sh"]
+CMD ["/bin/bash", "/run.sh"]
