@@ -14,7 +14,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build . -t aloneguid/des-jumpbox
-        working-directory: ./docker/base
+        working-directory: ./docker/jumpbox
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
