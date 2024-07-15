@@ -1,13 +1,26 @@
-FROM aloneguid/des-base:latest
+FROM ubuntu:24.04
 
-# VSCode: Install VSCode Server
-#RUN curl -fsSL https://code-server.dev/install.sh | sh
+# Install OpenSSH Server
+RUN apt-get update && \
+    apt-get install -y openssh-server && \
+    rm -rf /var/lib/apt/lists/*
 
-# enable SSH and start ssh daemon on container start
-RUN apt-get update && apt-get install -y openssh-server
+# Setup User "dev" with password "dev"
+RUN useradd -m -s /bin/bash dev && \
+    echo 'dev:dev' | chpasswd
+
+# Configure SSH
 RUN mkdir /var/run/sshd
-RUN echo 'root:root' | chpasswd
-RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+RUN echo 'PermitRootLogin no' >> /etc/ssh/sshd_config && \
+    echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config && \
+    echo 'PermitEmptyPasswords no' >> /etc/ssh/sshd_config
+
+# Adjust permissions
+RUN chown -R dev:dev /home/dev && \
+    chmod 700 /home/dev
+
+# Expose SSH port
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+
+# Start SSH server
+CMD ["/usr/sbin/sshd", "-D", "-d"]
